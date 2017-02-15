@@ -16,11 +16,11 @@ def bisection(f, a, b, xtol):
         return -1
     else:
         xerr = abs(b-a)
-        iter = 0
+        i = 0
         m = (a+b)/2
         fm = f(m)
     while (xerr > xtol):
-        iter = iter + 1
+        i = i + 1
         if (fm == 0):
             xerr = 0
             return m
@@ -32,7 +32,7 @@ def bisection(f, a, b, xtol):
         m = (a+b)/2
         fm = f(m)
 
-    return m
+    return m, i
    
     
 #############################################################################
@@ -41,6 +41,6 @@ def bisection(f, a, b, xtol):
 rootFunction = lambda x: x**2 - 1
 a = 0
 b = 10
-xtol = 10**-5
+xtol = 10**-7
 print(bisection(rootFunction, a, b, xtol)) 
                      
