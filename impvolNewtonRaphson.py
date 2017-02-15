@@ -1,3 +1,8 @@
+# This script defines the functions necessary to imply a volatility given a 
+# European option's price, S, K, r, t, q and type (call or put). To do this
+# the Newton-Raphson root-finding method is used. The user can specify a 
+# starting guess for the volatility and the precision required in the answer.
+
 #############################################################################
 # Define function BSEuropeanOption
 #############################################################################
@@ -141,7 +146,7 @@ def impvolNewtonRaphson(C, S, K, r, t, q, xn, xtol, call):
         return vol
 
 #############################################################################
-# Test functions with some arbitrary values
+# To use the functions change the values below
 #############################################################################
 # Test parameters:
 S = 100
