@@ -1,5 +1,3 @@
-
-
 #############################################################################
 # Define function BSEuropeanOption
 #############################################################################
@@ -51,7 +49,7 @@ def d_BSEuropeanOption(S, K, vol, r, t, q):
     return df
 
 ######################################################################
-# Define function newtonraphson
+# Define function NewtonRaphson
 ######################################################################
 # This function takes:
 # f: a function
@@ -62,7 +60,7 @@ def d_BSEuropeanOption(S, K, vol, r, t, q):
 # This function returns:
 # The root to the function supplied, using the Newton-Raphson method.
 #
-def newtonraphson(f, df, xn, xtol):
+def NewtonRaphson(f, df, xn, xtol):
     fxn = f(xn)
     dfxn = df(xn)
     i = 1
@@ -119,7 +117,7 @@ def impvolNewtonRaphson(C, S, K, r, t, q, xn, xtol, call):
             df = lambda vol: d_BSEuropeanOption(S, K, vol, r, t, q)
         # Uses the function and its derivative to find the root using the
         # Newton-Raphson method
-            vol = newtonraphson(f, df, xn, xtol)
+            vol = NewtonRaphson(f, df, xn, xtol)
             return vol
     elif (call==False):
     # Calculates rational price bounds for a put option per Merton (1973):
@@ -139,9 +137,37 @@ def impvolNewtonRaphson(C, S, K, r, t, q, xn, xtol, call):
         df = lambda vol: d_BSEuropeanOption(S, K, vol, r, t, q)
         # Uses the function and its derivative to find the root using the
         # Newton-Raphson method
-        vol = newtonraphson(f, df, xn, xtol)
+        vol = NewtonRaphson(f, df, xn, xtol)
         return vol
 
+#############################################################################
+# Test functions with some arbitrary values
+#############################################################################
+# Test parameters:
+S = 100
+K = 100
+vol = 0.25
+r = 0.05
+t = 0.1
+q = 0.02
+call = False
+xn = 0.5
+xtol = 10**-5
 
+# Calling the functions using these parameters
+price = BSEuropeanOption(S, K, vol, r, t, q, call)
+impVol = impvolNewtonRaphson(price, S, K, r, t, q, xn, xtol, call)
+
+if call == True:
+    optiontype = "call"
+else:
+    optiontype = "put"
+    
+print('''The price of a European %s option for S = %4.2f, K = %4.2f, 
+      vol = %4.3f, r = %4.3f, t = %4.3f, q = %4.3f is %4.3f'''
+      % (optiontype, S, K, vol, r, t, q, price))
+print('''The volatility implied by a European %s option price of %4.3f, and
+      S = %4.2f, K = %4.2f, r = %4.3f, t = %4.3f, q = %4.3f is %4.3f'''
+      % (optiontype, price, S, K,  r, t, q, impVol))
 
 
